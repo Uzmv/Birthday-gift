@@ -9,7 +9,7 @@
   <style>
     /* ===== Global Styles ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Montserrat', sans-serif; background-color: #A8E6CF; color: #333; line-height: 1.6; }
+    body { font-family: 'Montserrat', sans-serif; background-color: #A8E6CF; color: #333; overflow-x: hidden; }
     .section { width: 90%; max-width: 1000px; margin: 0 auto; padding: 2rem 0; text-align: center; }
     .hidden { display: none; }
 
@@ -86,8 +86,8 @@
     }
 
     /* ===== Next Button ===== */
-    #nextSection { text-align: center; margin-top: 1rem; }
-    #nextBtn {
+    #next1Section, #next2Section { text-align: center; margin-top: 1rem; }
+    .button {
       display: inline-block;
       padding: 0.75rem 1.5rem;
       background-color: #ffffff;
@@ -98,13 +98,28 @@
       cursor: pointer;
       transition: background-color 0.3s, color 0.3s;
     }
-    #nextBtn:hover {
+    .button:hover {
       background-color: #3EB489;
       color: #ffffff;
     }
 
+    /* ===== Cake Slide ===== */
+    #slide2 svg {
+      width: 200px;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+    #wishText {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      color: #FF69B4;
+      margin-top: 1rem;
+      display: none;
+    }
+
     /* ===== Envelope & Letter Slide ===== */
-    #slide2 { padding-top: 5rem; }
+    #slide3 { padding-top: 5rem; }
     .envelope {
       font-size: 10rem;
       cursor: pointer;
@@ -148,22 +163,20 @@
       #slide1 header h1 { font-size: 3.5rem; }
       #slide1 header p { font-size: 1.3rem; }
       #about h2 { font-size: 2.2rem; }
-      .envelope { font-size: 8rem; }
-      .letter { width: 95%; }
+      #wishText { font-size: 2rem; }
     }
     @media (max-width: 768px) {
       #slide1 header h1 { font-size: 3rem; }
       #slide1 header p { font-size: 1.2rem; }
       #about h2 { font-size: 2rem; }
-      .envelope { font-size: 6rem; }
+      #wishText { font-size: 1.8rem; }
     }
     @media (max-width: 480px) {
       #slide1 header h1 { font-size: 2.5rem; }
       #slide1 header p { font-size: 1rem; }
-      .envelope { font-size: 5rem; }
-      .letter { padding: 1rem; }
-      .letter h2 { font-size: 1.5rem; }
-      .letter p { font-size: 0.9rem; }
+      #about h2 { font-size: 1.8rem; }
+      #wishText { font-size: 1.5rem; }
+      #slide2 svg { width: 150px; }
     }
   </style>
 </head>
@@ -187,14 +200,43 @@
       <p>Though we may be far apart, my love for you grows stronger every day. This small gift is a small essence of my love, filled with moments, and all the love I have for you. Happy Birthday! You are my world, my heart, my everything.</p>
     </section>
 
-    <!-- ===== Next Button Centered ===== -->
-    <div id="nextSection" class="section">
-      <button id="nextBtn">Next</button>
+    <!-- ===== Next Button for Slide 1 ===== -->
+    <div id="next1Section" class="section">
+      <button id="toCakeBtn" class="button">Next</button>
     </div>
   </div>
 
-  <!-- ===== Slide 2 ===== -->
+  <!-- ===== Slide 2 (Cake) ===== -->
   <div id="slide2" class="hidden">
+    <section class="section">
+      <h2>Make a Wish</h2>
+      <!-- Inline SVG of a Cake with Candles -->
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cake base -->
+        <rect x="50" y="100" width="100" height="50" fill="#D2691E" />
+        <!-- Icing -->
+        <rect x="50" y="90" width="100" height="20" fill="#FFFFFF" />
+        <!-- Candles -->
+        <rect x="70" y="60" width="10" height="30" fill="#FFFAFA" />
+        <rect x="120" y="60" width="10" height="30" fill="#FFFAFA" />
+        <!-- Flames -->
+        <path id="flame1" d="M75,60 C75,50 85,50 85,60 C85,70 75,70 75,60" fill="#FFA500" />
+        <path id="flame2" d="M125,60 C125,50 135,50 135,60 C135,70 125,70 125,60" fill="#FFA500" />
+      </svg>
+      <!-- Blow Button -->
+      <div id="blowSection" class="section">
+        <button id="blowBtn" class="button">Blow</button>
+      </div>
+      <!-- Make a wish text and Next Button (hidden initially) -->
+      <div id="wishText">Make a wish!</div>
+      <div id="next2Section" class="section hidden">
+        <button id="toLetterBtn" class="button">Next</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== Slide 3 (Envelope & Letter) ===== -->
+  <div id="slide3" class="hidden">
     <section class="section">
       <h2>Open Your Gift</h2>
       <!-- Pink Envelope -->
@@ -215,11 +257,26 @@ Uzair
   </div>
 
   <script>
-    // Slide navigation and envelope click
-    document.getElementById('nextBtn').addEventListener('click', function() {
+    // Slide navigation
+    document.getElementById('toCakeBtn').addEventListener('click', function() {
       document.getElementById('slide1').classList.add('hidden');
       document.getElementById('slide2').classList.remove('hidden');
     });
+    document.getElementById('blowBtn').addEventListener('click', function() {
+      // Hide flames
+      document.getElementById('flame1').style.display = 'none';
+      document.getElementById('flame2').style.display = 'none';
+      // Hide Blow button
+      document.getElementById('blowSection').classList.add('hidden');
+      // Show Make a wish text and Next button
+      document.getElementById('wishText').style.display = 'block';
+      document.getElementById('next2Section').classList.remove('hidden');
+    });
+    document.getElementById('toLetterBtn').addEventListener('click', function() {
+      document.getElementById('slide2').classList.add('hidden');
+      document.getElementById('slide3').classList.remove('hidden');
+    });
+    // Envelope click to show letter
     document.getElementById('envelope').addEventListener('click', function() {
       document.getElementById('letter').classList.add('show');
     });
